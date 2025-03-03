@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assignment 4</title>
+    <link href="./src/style.css" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-slate-700 text-gray-50">
+    <main class="p-4">
+      <script src="src/asg4.ts" type="module"></script>
+      <script src="src/lib/webgl-utils.js"></script>
+      <script src="src/lib/webgl-debug.js"></script>
+      <script src="src/lib/cuon-matrix-cse160.js" type="module"></script>
+      <script src="src/lib/cuon-utils.js" type="module"></script>
+      <div class="flex">
+        <div class="flex flex-col mx-auto">
+          <div class="flex mx-auto">
+            <canvas
+              class="rounded-sm border bg-black border-gray-400"
+              id="webgl"
+              width="800"
+              height="800"
+            >
+              Please use a browser that supports "canvas"
+            </canvas>
+          </div>
+          <div>
+            <p id="numdot" class="text-gray-400"></p>
+          </div>
+
+          <div class="flex flex-col py-2 space-y-2 w-fit">
+            <div class="flex items-center mt-1 space-x-2">
+              <button
+                id="b_toggle_normal"
+                class="py-1 px-2 bg-gray-400 rounded hover:bg-gray-500"
+              >
+                Toggle Normal
+              </button>
+              <div class="flex items-center mt-1">
+                <span id="normal_status" class="font-semibold">Off</span>
+              </div>
+            </div>
+            <div class="flex items-center mt-1 space-x-2">
+              <button
+                id="b_toggle_lights"
+                class="py-1 px-2 bg-gray-400 rounded hover:bg-gray-500"
+              >
+                Toggle Lights
+              </button>
+              <div class="flex items-center mt-1">
+                <span id="lights_status" class="font-semibold">On</span>
+              </div>
+            </div>
+          </div>
+          <div class="py-2">
+            <div class="flex flex-col py-2">
+              <div class="flex">
+                <label for="slider_light_x" class="w-32">Light X</label>
+                <input
+                  type="range"
+                  min="-10"
+                  max="10"
+                  value="0"
+                  id="slider_light_x"
+                />
+              </div>
+              <div class="flex">
+                <label for="slider_light_y" class="w-32">Light Y</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  value="5"
+                  id="slider_light_y"
+                />
+              </div>
+              <div class="flex">
+                <label for="slider_light_z" class="w-32">Light Z</label>
+                <input
+                  type="range"
+                  min="-10"
+                  max="10"
+                  value="0"
+                  id="slider_light_z"
+                />
+              </div>
+            </div>
+
+            <div class="flex flex-col py-2">
+              <h3 class="font-semibold text-gray-300 mb-2">
+                Spotlight Position
+              </h3>
+              <div class="flex">
+                <label for="slider_spotlight_x" class="w-32">Spotlight X</label>
+                <input
+                  type="range"
+                  min="-10"
+                  max="10"
+                  value="0"
+                  id="slider_spotlight_x"
+                />
+              </div>
+              <div class="flex">
+                <label for="slider_spotlight_y" class="w-32">Spotlight Y</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  value="10"
+                  id="slider_spotlight_y"
+                />
+              </div>
+              <div class="flex">
+                <label for="slider_spotlight_z" class="w-32">Spotlight Z</label>
+                <input
+                  type="range"
+                  min="-10"
+                  max="10"
+                  value="0"
+                  id="slider_spotlight_z"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
