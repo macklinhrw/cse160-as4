@@ -3,7 +3,7 @@ import { Matrix4, Vector3 } from "../lib/cuon-matrix-cse160";
 import { Map } from "./map";
 import { Turtle } from "./turtle";
 import Camera from "./camera";
-import { g_lightPos, g_normalOn, g_spotLightPos } from "../asg4";
+import { g_lightPos, g_normalOn, g_spotLightPos, g_lightColor } from "../asg4";
 import { Sphere } from "../primitives/sphere";
 export class World {
   camera: Camera;
@@ -46,13 +46,18 @@ export class World {
     this.sphere.setImage("grass.png", 0);
 
     this.light = new Cube();
-    this.light.color = [1.0, 1.0, 0.0, 1.0];
+    this.light.color = [g_lightColor[0], g_lightColor[1], g_lightColor[2], 1.0];
     this.light.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2]);
     this.light.matrix.scale(-0.3, -0.3, -0.3);
     this.light.matrix.translate(-0.5, -0.5, -0.5);
 
     this.spotlight = new Cube();
-    this.spotlight.color = [1.0, 1.0, 0.0, 1.0];
+    this.spotlight.color = [
+      g_lightColor[0],
+      g_lightColor[1],
+      g_lightColor[2],
+      1.0,
+    ];
     this.spotlight.matrix.translate(
       g_spotLightPos[0],
       g_spotLightPos[1],

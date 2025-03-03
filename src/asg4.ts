@@ -35,6 +35,7 @@ const FSHADER_SOURCE =
   "varying vec4 v_VertPos;\n" +
   "uniform vec4 u_FragColor;\n" +
   "uniform vec3 u_LightPos;\n" +
+  "uniform vec3 u_LightColor;\n" +
   "uniform vec3 u_SpotLightPos;\n" +
   "uniform vec3 u_SpotLightDir;\n" +
   "uniform vec3 u_cameraPos;\n" +
@@ -94,7 +95,7 @@ const FSHADER_SOURCE =
   "    }\n" +
   "  \n" +
   "    // Calculate diffuse and ambient lighting\n" +
-  "    vec3 diffuse = vec3(gl_FragColor) * nDotL * 0.7;\n" +
+  "    vec3 diffuse = vec3(gl_FragColor) * nDotL * 0.7 * u_LightColor;\n" +
   "    vec3 ambient = vec3(gl_FragColor) * 0.3;\n" +
   "    vec3 result = specular+diffuse+ambient;\n" +
   "\n" +
@@ -114,7 +115,7 @@ const FSHADER_SOURCE =
   "        spotSpecular = pow(max(dot(E, spotReflection), 0.0), 100.0);\n" +
   "      }\n" +
   "      float intensity = 0.6 * (1.0 / (1.0 + 0.05 * spotR * spotR));\n" +
-  "      vec3 spotDiffuse = vec3(gl_FragColor) * spotNDotL * intensity;\n" +
+  "      vec3 spotDiffuse = vec3(gl_FragColor) * spotNDotL * intensity * u_LightColor;\n" +
   "      result += spotDiffuse + vec3(spotSpecular);\n" +
   "    }\n" +
   "    gl_FragColor = vec4(result, 1.0);\n" +
@@ -141,6 +142,7 @@ export let u_enableSpecular: WebGLUniformLocation;
 export let u_lightsOn: WebGLUniformLocation;
 export let u_SpotLightPos: WebGLUniformLocation;
 export let u_SpotLightDir: WebGLUniformLocation;
+export let u_LightColor: WebGLUniformLocation;
 export let program: WebGLProgram;
 
 // Globals for drawing UI
@@ -163,6 +165,7 @@ export let g_mouseRotY = 0;
 export let g_lightPos = [0, 6, 0];
 export let g_spotLightPos = [0, 4, 0];
 export let g_spotLightDir = [0, -1, 0];
+export let g_lightColor = [1.0, 1.0, 1.0]; // Default white light
 
 export let g_camera: Camera;
 export let g_world: World;
@@ -333,6 +336,14 @@ function connectVariablesToGLSL() {
     return;
   }
   u_SpotLightDir = u_SpotLightDirTmp;
+
+  // Get the storage location of u_LightColor
+  let u_LightColorTmp = gl.getUniformLocation(gl.program, "u_LightColor");
+  if (!u_LightColorTmp) {
+    console.log("Failed to get the storage location of u_LightColor");
+    return;
+  }
+  u_LightColor = u_LightColorTmp;
 }
 
 function updateLightPosition() {
@@ -345,6 +356,15 @@ function updateLightPosition() {
   g_world.light.matrix.translate(-0.5, -0.5, -0.5);
 
   gl.uniform3f(u_LightPos, g_lightPos[0], g_lightPos[1], g_lightPos[2]);
+  gl.uniform3f(u_LightColor, g_lightColor[0], g_lightColor[1], g_lightColor[2]);
+
+  // change cube color to match light color
+  g_world.light.color = [
+    g_lightColor[0],
+    g_lightColor[1],
+    g_lightColor[2],
+    1.0,
+  ];
 
   g_world.spotlight.matrix.setTranslate(
     g_spotLightPos[0],
@@ -353,6 +373,14 @@ function updateLightPosition() {
   );
   g_world.spotlight.matrix.scale(-0.3, -0.3, -0.3);
   g_world.spotlight.matrix.translate(-0.5, -0.5, -0.5);
+
+  // change cube color to match light color
+  g_world.spotlight.color = [
+    g_lightColor[0],
+    g_lightColor[1],
+    g_lightColor[2],
+    1.0,
+  ];
 
   gl.uniform3f(
     u_SpotLightPos,
@@ -406,6 +434,34 @@ export function addActionsForHtmlUI() {
   ) as HTMLInputElement;
   sliderLightZ.addEventListener("input", (event) => {
     g_lightPos[2] = Number((event.target as HTMLInputElement).value);
+    updateLightPosition();
+    renderScene();
+  });
+
+  // Light color sliders
+  let sliderLightColorR = document.getElementById(
+    "slider_light_color_r"
+  ) as HTMLInputElement;
+  sliderLightColorR.addEventListener("input", (event) => {
+    g_lightColor[0] = Number((event.target as HTMLInputElement).value);
+    updateLightPosition();
+    renderScene();
+  });
+
+  let sliderLightColorG = document.getElementById(
+    "slider_light_color_g"
+  ) as HTMLInputElement;
+  sliderLightColorG.addEventListener("input", (event) => {
+    g_lightColor[1] = Number((event.target as HTMLInputElement).value);
+    updateLightPosition();
+    renderScene();
+  });
+
+  let sliderLightColorB = document.getElementById(
+    "slider_light_color_b"
+  ) as HTMLInputElement;
+  sliderLightColorB.addEventListener("input", (event) => {
+    g_lightColor[2] = Number((event.target as HTMLInputElement).value);
     updateLightPosition();
     renderScene();
   });
@@ -464,9 +520,12 @@ function main() {
   // Set up actions for HTML UI elements
   addActionsForHtmlUI();
 
-  // Initialize normal status
+  // setup status indicators
   sendTextToHtml(g_normalOn ? "On" : "Off", "normal_status");
   sendTextToHtml(g_lightsOn ? "On" : "Off", "lights_status");
+
+  // Set initial light color
+  gl.uniform3f(u_LightColor, g_lightColor[0], g_lightColor[1], g_lightColor[2]);
 
   // Register function (event handler) to be called on a mouse press
   canvas.onmousedown = click;
