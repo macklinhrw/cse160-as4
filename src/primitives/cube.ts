@@ -9,7 +9,7 @@ import {
   uTexture0,
   uTexture1,
 } from "../asg4";
-import { drawTriangles3dUv, drawTriangles3dUvNormal } from "./triangle";
+import { drawTriangles3dUvNormal } from "./triangle";
 import { Matrix4 } from "../lib/cuon-matrix-cse160";
 
 export class Cube {

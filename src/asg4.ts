@@ -7,8 +7,6 @@ import {
   sendTextToHTML as sendTextToHtml,
 } from "./utils";
 import { HtmlUi } from "./ui/ui";
-import { FullWidthContainer } from "./ui/fullWidthContainer";
-import { Button } from "./ui/button";
 import { PokemonGame } from "./pokemon";
 
 // Vertex shader program
@@ -544,68 +542,68 @@ function setup3d() {
   gl.uniformMatrix4fv(u_ViewMatrix, false, g_camera.viewMatrix.elements);
 }
 
-function setup2dUi() {
-  g_ui_1 = new HtmlUi();
+// function setup2dUi() {
+//   g_ui_1 = new HtmlUi();
 
-  // Create HTML UI
-  const uiContainerEl = new FullWidthContainer(100);
-  uiContainerEl.setText(
-    "Blocky World - Macklin Reeve-Wilson (mreevewi@ucsc.edu)"
-  );
+//   // Create HTML UI
+//   const uiContainerEl = new FullWidthContainer(100);
+//   uiContainerEl.setText(
+//     "Blocky World - Macklin Reeve-Wilson (mreevewi@ucsc.edu)"
+//   );
 
-  const buttonShowEl = new Button("Show");
-  buttonShowEl.setOnClick(() => {
-    uiContainerEl.setVisible(true);
-    buttonShowEl.setVisible(false);
-  });
-  buttonShowEl.setSize(50, 28);
-  buttonShowEl.setPositionRelativeBottomRight(10, 10);
-  buttonShowEl.addStyles("text-sm");
-  buttonShowEl.visible = false;
+//   const buttonShowEl = new Button("Show");
+//   buttonShowEl.setOnClick(() => {
+//     uiContainerEl.setVisible(true);
+//     buttonShowEl.setVisible(false);
+//   });
+//   buttonShowEl.setSize(50, 28);
+//   buttonShowEl.setPositionRelativeBottomRight(10, 10);
+//   buttonShowEl.addStyles("text-sm");
+//   buttonShowEl.visible = false;
 
-  const buttonPlaceBlock = new Button("Place Block");
-  buttonPlaceBlock.setSize(100, 40);
-  buttonPlaceBlock.setPositionRelativeBottomLeft(20, 20);
-  buttonPlaceBlock.addStyles("text-xs");
-  buttonPlaceBlock.setParent(uiContainerEl);
-  buttonPlaceBlock.setOnClick(() => {
-    g_world.placeBlock(g_world.getNearestBlockPositionFromCamera());
-  });
+//   const buttonPlaceBlock = new Button("Place Block");
+//   buttonPlaceBlock.setSize(100, 40);
+//   buttonPlaceBlock.setPositionRelativeBottomLeft(20, 20);
+//   buttonPlaceBlock.addStyles("text-xs");
+//   buttonPlaceBlock.setParent(uiContainerEl);
+//   buttonPlaceBlock.setOnClick(() => {
+//     g_world.placeBlock(g_world.getNearestBlockPositionFromCamera());
+//   });
 
-  const buttonRemoveBlock = new Button("Remove Block");
-  buttonRemoveBlock.setSize(100, 40);
-  buttonRemoveBlock.setPositionRelativeBottomLeft(140, 20);
-  buttonRemoveBlock.addStyles("text-xs");
-  buttonRemoveBlock.setParent(uiContainerEl);
-  buttonRemoveBlock.setOnClick(() => {
-    g_world.removeBlock(g_world.getNearestBlockPositionFromCamera());
-  });
+//   const buttonRemoveBlock = new Button("Remove Block");
+//   buttonRemoveBlock.setSize(100, 40);
+//   buttonRemoveBlock.setPositionRelativeBottomLeft(140, 20);
+//   buttonRemoveBlock.addStyles("text-xs");
+//   buttonRemoveBlock.setParent(uiContainerEl);
+//   buttonRemoveBlock.setOnClick(() => {
+//     g_world.removeBlock(g_world.getNearestBlockPositionFromCamera());
+//   });
 
-  const buttonBattle = new Button("Blockmon Battle");
-  buttonBattle.setSize(100, 40);
-  buttonBattle.setPositionRelativeBottomLeft(280, 20);
-  buttonBattle.addStyles("text-xs");
-  buttonBattle.setParent(uiContainerEl);
-  buttonBattle.setOnClick(() => {
-    g_pokemonGame.start();
-    g_pokemonGame.shouldStart = true;
-  });
+//   const buttonBattle = new Button("Blockmon Battle");
+//   buttonBattle.setSize(100, 40);
+//   buttonBattle.setPositionRelativeBottomLeft(280, 20);
+//   buttonBattle.addStyles("text-xs");
+//   buttonBattle.setParent(uiContainerEl);
+//   buttonBattle.setOnClick(() => {
+//     g_pokemonGame.start();
+//     g_pokemonGame.shouldStart = true;
+//   });
 
-  const buttonEl = new Button("Hide");
-  buttonEl.setParent(uiContainerEl);
-  buttonEl.setOnClick(() => {
-    uiContainerEl.setVisible(false);
-    buttonShowEl.setVisible(true);
-  });
-  buttonEl.setSize(60, 32);
-  buttonEl.setPositionRelativeBottomRight(20, 20);
+//   const buttonEl = new Button("Hide");
+//   buttonEl.setParent(uiContainerEl);
+//   buttonEl.setOnClick(() => {
+//     uiContainerEl.setVisible(false);
+//     buttonShowEl.setVisible(true);
+//   });
+//   buttonEl.setSize(60, 32);
+//   buttonEl.setPositionRelativeBottomRight(20, 20);
 
-  g_ui_1.addElement(uiContainerEl);
-  g_ui_1.addElement(buttonEl);
-  g_ui_1.addElement(buttonShowEl);
+//   g_ui_1.addElement(uiContainerEl);
+//   g_ui_1.addElement(buttonEl);
+//   g_ui_1.addElement(buttonShowEl);
 
-  g_ui_1.render();
-}
+//   g_ui_1.render();
+// }
 
 export function renderScene() {
   const startTime = performance.now();
